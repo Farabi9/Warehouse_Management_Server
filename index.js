@@ -44,11 +44,18 @@ async function run() {
         
         
         //deliver a item
-        app.get('/products/:id', async(req, res) =>{
-            const id = req.params.id;
-            const query = { _id:  ObjectId(id)};
+        app.delete('/products/:id', async(req, res) =>{
+            const quantity = req.params.id.quantity;
+            const query = { _id: ObjectId(quantity)};
             const result = await productCollection.deleteOne(query);
             res.send(result)
+        })
+
+        //add product
+        app.post('/products', async(req, res)=>{
+            const newProduct = req.body;
+            const result = await productCollection.insertOne(newProduct);
+            res.send(result);
         })
     }
     finally {
