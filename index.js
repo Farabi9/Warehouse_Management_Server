@@ -40,6 +40,23 @@ async function run() {
             const product = await productCollection.findOne(query);
             res.send(product);
         })
+
+
+        //deliver a product
+        app.put('/products/:id', async (req, res) => {
+            const id = req.params.id;
+            const updatedQuantity = req.body;
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const updatesDoc = {
+                $set: {
+                  quantity: updatedQuantity.quantity,
+                }
+            };
+
+            const result = await productCollection.updateOne(filter, updatesDoc, options);
+            res.send(result);
+        })
         
         
        //delete a item from inventory
