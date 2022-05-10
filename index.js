@@ -37,26 +37,20 @@ async function run() {
         app.get('/products/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) };
-            // console.log(query);
             const product = await productCollection.findOne(query);
             res.send(product);
         })
         
         
-       //deliver item
-       app.put('/products/:id', async(req, res) =>{
+       //delete a item from inventory
+       app.delete('/products/:id', async(req, res) =>{
            const id = req.params.id;
-           const updateQuantity = req.body; 
-           const filter = { _id: ObjectId(id)}
-           const option = {upsert : true};
-           const update = {
-               $set: {
-                   qunatity: updateQuantity.qunatity
-               }
-           }
-           const result = await productCollection.updateOne(filter, update, option)
-           res.send(result)
-       })
+           const query = {_id: new ObjectId(id)};
+           const result = await productCollection.deleteOne(query);
+           res.send(result);
+       }) 
+    
+     
 
         //add product
         app.post('/products', async(req, res)=>{
